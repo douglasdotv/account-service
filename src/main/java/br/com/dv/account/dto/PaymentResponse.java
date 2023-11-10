@@ -2,7 +2,7 @@ package br.com.dv.account.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record SignupResponse(
+public record PaymentResponse(
         @JsonProperty("id")
         Long userId,
         String name,
