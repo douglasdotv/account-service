@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex,
-                                                                    WebRequest request) {
+    public ResponseEntity<CustomErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex,
+                                                                          WebRequest request) {
         String fieldErrorsMessage = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining(", "));
 
-        ErrorResponse errorResponse = new ErrorResponse(
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
             BreachedPasswordException.class,
             SamePasswordException.class
     })
-    public ResponseEntity<ErrorResponse> handleUserValidationExceptions(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<CustomErrorResponse> handleUserValidationExceptions(Exception ex, WebRequest request) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -55,11 +55,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAuthenticationMismatchException.class)
-    public ResponseEntity<ErrorResponse> handleUserAuthenticationMismatchException(
+    public ResponseEntity<CustomErrorResponse> handleUserAuthenticationMismatchException(
             UserAuthenticationMismatchException ex,
             WebRequest request
     ) {
-        ErrorResponse errorResponse = new ErrorResponse(
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public record ErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
+    public record CustomErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
     }
 
 }
