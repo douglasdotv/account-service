@@ -10,9 +10,9 @@ import java.util.Set;
 @Service
 public class UserValidationService {
 
-    private final static String EXPECTED_EMAIL_DOMAIN = "@acme.com";
-    private final static int MINIMUM_PASSWORD_LENGTH = 12;
-    private final static Set<String> BREACHED_PASSWORDS = Set.of(
+    private static final String EXPECTED_EMAIL_DOMAIN = "@acme.com";
+    private static final int MINIMUM_PASSWORD_LENGTH = 12;
+    private static final Set<String> BREACHED_PASSWORDS = Set.of(
             "PasswordForJanuary", "PasswordForFebruary", "PasswordForMarch", "PasswordForApril",
             "PasswordForMay", "PasswordForJune", "PasswordForJuly", "PasswordForAugust",
             "PasswordForSeptember", "PasswordForOctober", "PasswordForNovember", "PasswordForDecember"
