@@ -25,22 +25,20 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signUp(@Valid @RequestBody SignupRequest signupRequest) {
-        SignupResponse signupResponse = authService.signUp(signupRequest);
-        return ResponseEntity.ok(signupResponse);
+    public ResponseEntity<SignupResponse> signUp(@Valid @RequestBody SignupRequest request) {
+        SignupResponse response = authService.signUp(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/changepass")
-    public ResponseEntity<PasswordChangeResponse> changePassword(
-            @Valid @RequestBody PasswordChangeRequest passwordChangeRequest,
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        PasswordChangeResponse passwordChangeResponse = authService.changePassword(
-                passwordChangeRequest,
+    public ResponseEntity<PasswordChangeResponse> changePassword(@Valid @RequestBody PasswordChangeRequest request,
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        PasswordChangeResponse response = authService.changePassword(
+                request,
                 userDetails.getUsername(),
                 userDetails.getPassword()
         );
-        return ResponseEntity.ok(passwordChangeResponse);
+        return ResponseEntity.ok(response);
     }
 
 }
