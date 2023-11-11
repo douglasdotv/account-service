@@ -21,8 +21,8 @@ public class EmployeeController {
 
     @GetMapping("/payment")
     public ResponseEntity<PaymentResponse> getPayment(@AuthenticationPrincipal UserDetails userDetails) {
-        PaymentResponse paymentResponse = employeeService.getPayment(userDetails.getUsername());
-        return ResponseEntity.ok(paymentResponse);
+        PaymentResponse response = employeeService.getPayment(userDetails.getUsername());
+        return ResponseEntity.ok(response);
     }
 
 }

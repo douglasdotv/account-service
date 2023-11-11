@@ -7,9 +7,10 @@ import br.com.dv.account.dto.SignupResponse;
 
 public interface AuthService {
 
-    SignupResponse signUp(SignupRequest signupRequest);
+    SignupResponse signUp(SignupRequest signup);
 
-    PasswordChangeResponse changePassword(PasswordChangeRequest passwordChangeRequest,
-                                          String userEmail, String currentPassword);
+    PasswordChangeResponse changePassword(PasswordChangeRequest passwordChange,
+                                          String userEmail,
+                                          String currentPassword);
 
 }
