@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final String USER_EMAIL_NOT_FOUND_MESSAGE = "User with e-mail %s not found.";
+    
     private final UserRepository userRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository) {
