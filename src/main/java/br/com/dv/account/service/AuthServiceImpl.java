@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SignupResponse signUp(SignupRequest signup) {
-        userValidationService.validateSignup(signup.email(), signup.password());
+        userValidationService.validateSignup(signup);
 
         User user = userMapper.signupRequestToUser(signup);
         user.setPassword(passwordEncoder.encode(signup.password()));
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     public PasswordChangeResponse changePassword(PasswordChangeRequest passwordChange,
                                                  String userEmail,
                                                  String currentPassword) {
-        userValidationService.validatePasswordChange(passwordChange.newPassword(), currentPassword);
+        userValidationService.validatePasswordChange(passwordChange, currentPassword);
 
         User user = userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new UserAuthenticationMismatchException(userEmail));

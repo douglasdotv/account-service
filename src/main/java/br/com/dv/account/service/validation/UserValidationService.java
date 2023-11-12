@@ -1,5 +1,7 @@
 package br.com.dv.account.service.validation;
 
+import br.com.dv.account.dto.PasswordChangeRequest;
+import br.com.dv.account.dto.SignupRequest;
 import br.com.dv.account.exception.custom.*;
 import br.com.dv.account.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,17 +28,17 @@ public class UserValidationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void validateSignup(String userEmail, String password) {
-        validateEmailDomain(userEmail);
-        validateExistingEmail(userEmail);
-        validatePasswordLength(password);
-        validateBreachedPassword(password);
+    public void validateSignup(SignupRequest signup) {
+        validateEmailDomain(signup.email());
+        validateExistingEmail(signup.email());
+        validatePasswordLength(signup.password());
+        validateBreachedPassword(signup.password());
     }
 
-    public void validatePasswordChange(String newPassword, String currentPassword) {
-        validatePasswordLength(newPassword);
-        validateBreachedPassword(newPassword);
-        validateSamePassword(newPassword, currentPassword);
+    public void validatePasswordChange(PasswordChangeRequest passwordChange, String currentPassword) {
+        validatePasswordLength(passwordChange.newPassword());
+        validateBreachedPassword(passwordChange.newPassword());
+        validateSamePassword(passwordChange.newPassword(), currentPassword);
     }
 
     private void validateEmailDomain(String email) {
