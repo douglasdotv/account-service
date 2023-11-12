@@ -48,24 +48,31 @@ public class AccountingValidationService {
 
     private void ensureUniqueEmployeePeriodPair(List<PaymentUploadRequest> payments) {
         ensureUniqueEmployeePeriodPairWithinBatch(payments);
-        payments.forEach(payment -> ensureUniqueEmployeePeriodPairInDb(payment.employeeEmail(), payment.period()));
+        ensureUniqueEmployeePeriodPairInDb(payments);
     }
 
     private void ensureUniqueEmployeePeriodPairWithinBatch(List<PaymentUploadRequest> payments) {
         Set<String> uniquePairs = new HashSet<>();
         payments.forEach(payment -> {
-            String pair = payment.employeeEmail() + payment.period();
-            if (uniquePairs.contains(pair)) {
-                throw new NonUniqueEmployeePeriodPairException(payment.employeeEmail(), payment.period());
+            String employeeEmail = payment.employeeEmail();
+            String period = payment.period();
+            String pair = employeeEmail + period;
+            boolean isUnique = uniquePairs.add(pair);
+            if (!isUnique) {
+                throw new NonUniqueEmployeePeriodPairException(employeeEmail, period);
             }
-            uniquePairs.add(pair);
         });
     }
 
-    private void ensureUniqueEmployeePeriodPairInDb(String email, String period) {
-        if (paymentRepository.existsByEmployeeEmailAndPeriod(email, period)) {
-            throw new NonUniqueEmployeePeriodPairException(email, period);
-        }
+    private void ensureUniqueEmployeePeriodPairInDb(List<PaymentUploadRequest> payments) {
+        payments.forEach(payment -> {
+            String employeeEmail = payment.employeeEmail();
+            String period = payment.period();
+            boolean existsInDb = paymentRepository.existsByEmployeeEmailAndPeriod(employeeEmail, period);
+            if (existsInDb) {
+                throw new NonUniqueEmployeePeriodPairException(employeeEmail, period);
+            }
+        });
     }
 
 }
