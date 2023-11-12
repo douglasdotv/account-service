@@ -2,27 +2,26 @@ package br.com.dv.account.service.validation;
 
 import br.com.dv.account.dto.PaymentUploadRequest;
 import br.com.dv.account.exception.custom.EmployeeNotFoundException;
-import br.com.dv.account.exception.custom.InvalidPeriodException;
 import br.com.dv.account.exception.custom.NonUniqueEmployeePeriodPairException;
 import br.com.dv.account.repository.PaymentRepository;
 import br.com.dv.account.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountValidationService {
 
-    private static final String EXPECTED_PERIOD_FORMAT = "MM-yyyy";
-
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
+    private final CommonValidationService commonValidationService;
 
-    public AccountValidationService(UserRepository userRepository,
+    public AccountValidationService(CommonValidationService commonValidationService,
+                                    UserRepository userRepository,
                                     PaymentRepository paymentRepository) {
+        this.commonValidationService = commonValidationService;
         this.userRepository = userRepository;
         this.paymentRepository = paymentRepository;
     }
@@ -37,13 +36,8 @@ public class AccountValidationService {
         ensureUniqueEmployeePeriodPair(payments);
     }
 
-    public void validatePeriod(String period) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(EXPECTED_PERIOD_FORMAT);
-            YearMonth.parse(period, formatter);
-        } catch (DateTimeParseException e) {
-            throw new InvalidPeriodException();
-        }
+    private void validatePeriod(String period) {
+        commonValidationService.validatePeriod(period);
     }
 
     private void validateEmployeeExists(String email) {

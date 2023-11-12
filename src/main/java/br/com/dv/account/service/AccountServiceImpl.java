@@ -23,17 +23,17 @@ public class AccountServiceImpl implements AccountService {
 
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
-    private final AccountValidationService accountValidationService;
     private final PaymentMapper paymentMapper;
+    private final AccountValidationService accountValidationService;
 
     public AccountServiceImpl(PaymentRepository paymentRepository,
                               UserRepository userRepository,
-                              AccountValidationService accountValidationService,
-                              PaymentMapper paymentMapper) {
+                              PaymentMapper paymentMapper,
+                              AccountValidationService accountValidationService) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
-        this.accountValidationService = accountValidationService;
         this.paymentMapper = paymentMapper;
+        this.accountValidationService = accountValidationService;
     }
 
     @Override
