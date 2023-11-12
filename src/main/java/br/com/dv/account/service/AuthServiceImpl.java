@@ -34,11 +34,11 @@ public class AuthServiceImpl implements AuthService {
     public SignupResponse signUp(SignupRequest signupRequest) {
         userValidationService.validateSignup(signupRequest);
 
-        User user = userMapper.signupRequestToUser(signupRequest);
+        User user = userMapper.mapToUser(signupRequest);
         user.setPassword(passwordEncoder.encode(signupRequest.password()));
         User savedUser = userRepository.save(user);
 
-        return userMapper.userToSignupResponse(savedUser);
+        return userMapper.mapToSignupResponse(savedUser);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(passwordChangeRequest.newPassword()));
         User savedUser = userRepository.save(user);
 
-        return userMapper.userToPasswordChangeResponse(savedUser);
+        return userMapper.mapToPasswordChangeResponse(savedUser);
     }
 
 }

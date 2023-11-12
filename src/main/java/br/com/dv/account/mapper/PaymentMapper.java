@@ -17,15 +17,14 @@ public abstract class PaymentMapper {
     private static final String PERIOD_CONVERSION_EXPRESSION =
             "java(PeriodAndCurrencyFormatter.convertPeriodToMonthNameAndYearFormat(payment.getPeriod()))";
 
-    public abstract List<Payment> paymentUploadRequestListToPaymentList(List<PaymentUploadRequest>
-                                                                                paymentUploadRequests);
+    public abstract List<Payment> mapToPaymentList(List<PaymentUploadRequest> paymentsRequest);
 
     @Mapping(target = "name", source = "employee.name")
     @Mapping(target = "lastName", source = "employee.lastName")
     @Mapping(target = "salary", expression = SALARY_CONVERSION_EXPRESSION)
     @Mapping(target = "period", expression = PERIOD_CONVERSION_EXPRESSION)
-    public abstract PaymentResponse paymentToPaymentResponse(Payment payment);
+    public abstract PaymentResponse mapToPaymentResponse(Payment payment);
 
-    public abstract List<PaymentResponse> paymentListToPaymentResponseList(List<Payment> payments);
+    public abstract List<PaymentResponse> mapToPaymentResponseList(List<Payment> payments);
 
 }
