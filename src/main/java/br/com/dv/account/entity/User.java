@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter @Setter
 @Table(name = "app_user")
@@ -24,5 +27,13 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Payment> payments = new HashSet<>();
+
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.setEmployee(this);
+    }
 
 }

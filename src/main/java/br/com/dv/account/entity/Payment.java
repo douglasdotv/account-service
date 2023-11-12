@@ -23,6 +23,10 @@ public class Payment {
     @Column(nullable = false)
     private Long salary;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User employee;
+
     @Column(name = "period_year", nullable = false)
     private int periodYear;
 
