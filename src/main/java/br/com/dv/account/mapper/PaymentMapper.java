@@ -19,6 +19,7 @@ public abstract class PaymentMapper {
 
     public abstract List<Payment> mapToPaymentList(List<PaymentUploadRequest> paymentsRequest);
 
+    @SuppressWarnings("unused")
     @Mapping(target = "name", source = "employee.name")
     @Mapping(target = "lastName", source = "employee.lastName")
     @Mapping(target = "salary", expression = SALARY_CONVERSION_EXPRESSION)
