@@ -39,21 +39,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public PaymentUploadResponse addPayments(List<PaymentUploadRequest> payments) {
-        List<String> employeeEmails = payments.stream()
-                .map(PaymentUploadRequest::employeeEmail)
-                .toList();
-
-        List<String> periods = payments.stream()
-                .map(PaymentUploadRequest::period)
-                .toList();
-
-        accountValidationService.validatePayments(employeeEmails, periods);
+        accountValidationService.validatePayments(payments);
 
         List<Payment> employeePayments = paymentMapper.paymentUploadRequestListToPaymentList(payments);
 
         employeePayments.forEach(payment -> {
             User employee = userRepository.findByEmailIgnoreCase(payment.getEmployeeEmail())
                     .orElseThrow(() -> new EmployeeNotFoundException(payment.getEmployeeEmail()));
+
             payment.setEmployee(employee);
         });
 
@@ -65,11 +58,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public PaymentUploadResponse updatePayment(PaymentUploadRequest payment) {
-        accountValidationService.validatePayment(payment.employeeEmail(), payment.period());
+        accountValidationService.validatePayment(payment);
 
-        Payment employeePayment =
-                paymentRepository.findByEmployeeEmailIgnoreCaseAndPeriod(payment.employeeEmail(), payment.period())
-                        .orElseThrow(() -> new PaymentNotFoundException(payment.employeeEmail(), payment.period()));
+        Payment employeePayment = paymentRepository
+                .findByEmployeeEmailIgnoreCaseAndPeriod(payment.employeeEmail(), payment.period())
+                .orElseThrow(() -> new PaymentNotFoundException(payment.employeeEmail(), payment.period()));
 
         employeePayment.setSalary(payment.salary());
         paymentRepository.save(employeePayment);
