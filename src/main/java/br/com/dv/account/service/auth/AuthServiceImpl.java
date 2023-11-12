@@ -1,14 +1,14 @@
-package br.com.dv.account.service;
+package br.com.dv.account.service.auth;
 
-import br.com.dv.account.dto.PasswordChangeRequest;
-import br.com.dv.account.dto.PasswordChangeResponse;
-import br.com.dv.account.dto.SignupRequest;
-import br.com.dv.account.dto.SignupResponse;
+import br.com.dv.account.dto.auth.PasswordChangeRequest;
+import br.com.dv.account.dto.auth.PasswordChangeResponse;
+import br.com.dv.account.dto.auth.SignupRequest;
+import br.com.dv.account.dto.auth.SignupResponse;
 import br.com.dv.account.entity.User;
 import br.com.dv.account.exception.custom.UserAuthenticationMismatchException;
 import br.com.dv.account.mapper.UserMapper;
 import br.com.dv.account.repository.UserRepository;
-import br.com.dv.account.service.validation.UserValidationService;
+import br.com.dv.account.validation.UserValidationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

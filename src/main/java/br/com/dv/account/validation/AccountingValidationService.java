@@ -1,6 +1,6 @@
-package br.com.dv.account.service.validation;
+package br.com.dv.account.validation;
 
-import br.com.dv.account.dto.PaymentUploadRequest;
+import br.com.dv.account.dto.accounting.PaymentUploadRequest;
 import br.com.dv.account.exception.custom.EmployeeNotFoundException;
 import br.com.dv.account.exception.custom.NonUniqueEmployeePeriodPairException;
 import br.com.dv.account.repository.PaymentRepository;

@@ -1,4 +1,4 @@
-package br.com.dv.account.service.validation;
+package br.com.dv.account.validation;
 
 import org.springframework.stereotype.Service;
 

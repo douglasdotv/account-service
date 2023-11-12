@@ -1,8 +1,8 @@
 package br.com.dv.account.mapper;
 
-import br.com.dv.account.dto.PasswordChangeResponse;
-import br.com.dv.account.dto.SignupRequest;
-import br.com.dv.account.dto.SignupResponse;
+import br.com.dv.account.dto.auth.PasswordChangeResponse;
+import br.com.dv.account.dto.auth.SignupRequest;
+import br.com.dv.account.dto.auth.SignupResponse;
 import br.com.dv.account.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,9 +1,9 @@
-package br.com.dv.account.service;
+package br.com.dv.account.service.auth;
 
-import br.com.dv.account.dto.PasswordChangeRequest;
-import br.com.dv.account.dto.PasswordChangeResponse;
-import br.com.dv.account.dto.SignupRequest;
-import br.com.dv.account.dto.SignupResponse;
+import br.com.dv.account.dto.auth.PasswordChangeRequest;
+import br.com.dv.account.dto.auth.PasswordChangeResponse;
+import br.com.dv.account.dto.auth.SignupRequest;
+import br.com.dv.account.dto.auth.SignupResponse;
 
 public interface AuthService {
 

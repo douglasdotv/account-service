@@ -1,11 +1,11 @@
-package br.com.dv.account.service;
+package br.com.dv.account.service.employee;
 
-import br.com.dv.account.dto.PaymentResponse;
+import br.com.dv.account.dto.employee.PaymentResponse;
 import br.com.dv.account.entity.Payment;
 import br.com.dv.account.exception.custom.PaymentNotFoundException;
 import br.com.dv.account.mapper.PaymentMapper;
 import br.com.dv.account.repository.PaymentRepository;
-import br.com.dv.account.service.validation.EmployeeValidationService;
+import br.com.dv.account.validation.EmployeeValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

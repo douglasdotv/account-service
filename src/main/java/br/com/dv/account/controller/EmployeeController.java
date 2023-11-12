@@ -1,7 +1,7 @@
 package br.com.dv.account.controller;
 
-import br.com.dv.account.dto.PaymentResponse;
-import br.com.dv.account.service.EmployeeService;
+import br.com.dv.account.dto.employee.PaymentResponse;
+import br.com.dv.account.service.employee.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

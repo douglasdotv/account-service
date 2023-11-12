@@ -1,7 +1,7 @@
-package br.com.dv.account.service;
+package br.com.dv.account.service.accounting;
 
-import br.com.dv.account.dto.PaymentUploadRequest;
-import br.com.dv.account.dto.PaymentUploadResponse;
+import br.com.dv.account.dto.accounting.PaymentUploadRequest;
+import br.com.dv.account.dto.accounting.PaymentUploadResponse;
 
 import java.util.List;
 

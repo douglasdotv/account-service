@@ -1,7 +1,7 @@
-package br.com.dv.account.service;
+package br.com.dv.account.service.accounting;
 
-import br.com.dv.account.dto.PaymentUploadRequest;
-import br.com.dv.account.dto.PaymentUploadResponse;
+import br.com.dv.account.dto.accounting.PaymentUploadRequest;
+import br.com.dv.account.dto.accounting.PaymentUploadResponse;
 import br.com.dv.account.entity.Payment;
 import br.com.dv.account.entity.User;
 import br.com.dv.account.exception.custom.EmployeeNotFoundException;
@@ -9,7 +9,7 @@ import br.com.dv.account.exception.custom.PaymentNotFoundException;
 import br.com.dv.account.mapper.PaymentMapper;
 import br.com.dv.account.repository.PaymentRepository;
 import br.com.dv.account.repository.UserRepository;
-import br.com.dv.account.service.validation.AccountingValidationService;
+import br.com.dv.account.validation.AccountingValidationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
