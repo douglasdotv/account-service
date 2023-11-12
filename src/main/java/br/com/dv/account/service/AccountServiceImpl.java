@@ -38,34 +38,32 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public PaymentUploadResponse addPayments(List<PaymentUploadRequest> payments) {
-        accountValidationService.validatePayments(payments);
+    public PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest) {
+        accountValidationService.validatePayments(paymentsRequest);
 
-        List<Payment> employeePayments = paymentMapper.paymentUploadRequestListToPaymentList(payments);
-
-        employeePayments.forEach(payment -> {
+        List<Payment> payments = paymentMapper.paymentUploadRequestListToPaymentList(paymentsRequest);
+        payments.forEach(payment -> {
             User employee = userRepository.findByEmailIgnoreCase(payment.getEmployeeEmail())
                     .orElseThrow(() -> new EmployeeNotFoundException(payment.getEmployeeEmail()));
 
             employee.addPayment(payment);
         });
-
-        paymentRepository.saveAll(employeePayments);
+        paymentRepository.saveAll(payments);
 
         return new PaymentUploadResponse(ADDED_SUCCESSFULLY_STATUS);
     }
 
     @Override
     @Transactional
-    public PaymentUploadResponse updatePayment(PaymentUploadRequest payment) {
-        accountValidationService.validatePayment(payment);
+    public PaymentUploadResponse updatePayment(PaymentUploadRequest paymentRequest) {
+        accountValidationService.validatePayment(paymentRequest);
 
-        Payment employeePayment = paymentRepository
-                .findByEmployeeEmailIgnoreCaseAndPeriod(payment.employeeEmail(), payment.period())
-                .orElseThrow(() -> new PaymentNotFoundException(payment.employeeEmail(), payment.period()));
-
-        employeePayment.setSalary(payment.salary());
-        paymentRepository.save(employeePayment);
+        Payment payment = paymentRepository.findByEmployeeEmailIgnoreCaseAndPeriod(paymentRequest.employeeEmail(),
+                        paymentRequest.period())
+                .orElseThrow(() -> new PaymentNotFoundException(paymentRequest.employeeEmail(),
+                        paymentRequest.period()));
+        payment.setSalary(paymentRequest.salary());
+        paymentRepository.save(payment);
 
         return new PaymentUploadResponse(UPDATED_SUCCESSFULLY_STATUS);
     }

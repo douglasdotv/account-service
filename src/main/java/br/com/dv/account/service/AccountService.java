@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface AccountService {
 
-    PaymentUploadResponse addPayments(List<PaymentUploadRequest> payments);
+    PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest);
 
-    PaymentUploadResponse updatePayment(PaymentUploadRequest payment);
+    PaymentUploadResponse updatePayment(PaymentUploadRequest paymentRequest);
 
 }
