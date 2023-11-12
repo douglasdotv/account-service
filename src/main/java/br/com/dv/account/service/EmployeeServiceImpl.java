@@ -5,7 +5,7 @@ import br.com.dv.account.entity.Payment;
 import br.com.dv.account.exception.custom.PaymentNotFoundException;
 import br.com.dv.account.mapper.PaymentMapper;
 import br.com.dv.account.repository.PaymentRepository;
-import br.com.dv.account.service.validation.AccountValidationService;
+import br.com.dv.account.service.validation.EmployeeValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -16,20 +16,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
-    private final AccountValidationService accountValidationService;
+    private final EmployeeValidationService employeeValidationService;
 
     public EmployeeServiceImpl(PaymentRepository paymentRepository,
                                PaymentMapper paymentMapper,
-                               AccountValidationService accountValidationService) {
+                               EmployeeValidationService employeeValidationService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
-        this.accountValidationService = accountValidationService;
+        this.employeeValidationService = employeeValidationService;
     }
 
     @Override
     public List<PaymentResponse> getPaymentOrPayments(String employeeEmail, String period) {
         if (period != null) {
-            accountValidationService.validatePeriod(period);
+            employeeValidationService.validatePeriod(period);
         }
 
         List<Payment> payments = (period == null)
