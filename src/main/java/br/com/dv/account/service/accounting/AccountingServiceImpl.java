@@ -21,17 +21,17 @@ public class AccountingServiceImpl implements AccountingService {
     private static final String ADDED_SUCCESSFULLY_STATUS = "Added successfully!";
     private static final String UPDATED_SUCCESSFULLY_STATUS = "Updated successfully!";
 
-    private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final AccountingValidationService accountingValidationService;
 
-    public AccountingServiceImpl(PaymentRepository paymentRepository,
-                                 UserRepository userRepository,
+    public AccountingServiceImpl(UserRepository userRepository,
+                                 PaymentRepository paymentRepository,
                                  PaymentMapper paymentMapper,
                                  AccountingValidationService accountingValidationService) {
-        this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
+        this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.accountingValidationService = accountingValidationService;
     }
