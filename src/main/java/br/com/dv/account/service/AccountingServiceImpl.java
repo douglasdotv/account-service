@@ -9,14 +9,14 @@ import br.com.dv.account.exception.custom.PaymentNotFoundException;
 import br.com.dv.account.mapper.PaymentMapper;
 import br.com.dv.account.repository.PaymentRepository;
 import br.com.dv.account.repository.UserRepository;
-import br.com.dv.account.service.validation.AccountValidationService;
+import br.com.dv.account.service.validation.AccountingValidationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountingServiceImpl implements AccountingService {
 
     private static final String ADDED_SUCCESSFULLY_STATUS = "Added successfully!";
     private static final String UPDATED_SUCCESSFULLY_STATUS = "Updated successfully!";
@@ -24,22 +24,22 @@ public class AccountServiceImpl implements AccountService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
     private final PaymentMapper paymentMapper;
-    private final AccountValidationService accountValidationService;
+    private final AccountingValidationService accountingValidationService;
 
-    public AccountServiceImpl(PaymentRepository paymentRepository,
-                              UserRepository userRepository,
-                              PaymentMapper paymentMapper,
-                              AccountValidationService accountValidationService) {
+    public AccountingServiceImpl(PaymentRepository paymentRepository,
+                                 UserRepository userRepository,
+                                 PaymentMapper paymentMapper,
+                                 AccountingValidationService accountingValidationService) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.paymentMapper = paymentMapper;
-        this.accountValidationService = accountValidationService;
+        this.accountingValidationService = accountingValidationService;
     }
 
     @Override
     @Transactional
     public PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest) {
-        accountValidationService.validatePayments(paymentsRequest);
+        accountingValidationService.validatePayments(paymentsRequest);
 
         List<Payment> payments = paymentMapper.mapToPaymentList(paymentsRequest);
         payments.forEach(payment -> {
@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public PaymentUploadResponse updatePayment(PaymentUploadRequest paymentRequest) {
-        accountValidationService.validatePayment(paymentRequest);
+        accountingValidationService.validatePayment(paymentRequest);
 
         Payment payment = paymentRepository.findByEmployeeEmailIgnoreCaseAndPeriod(paymentRequest.employeeEmail(),
                         paymentRequest.period())

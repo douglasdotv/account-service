@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class AccountValidationService {
+public class AccountingValidationService {
 
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
     private final CommonValidationService commonValidationService;
 
-    public AccountValidationService(CommonValidationService commonValidationService,
-                                    UserRepository userRepository,
-                                    PaymentRepository paymentRepository) {
+    public AccountingValidationService(CommonValidationService commonValidationService,
+                                       UserRepository userRepository,
+                                       PaymentRepository paymentRepository) {
         this.commonValidationService = commonValidationService;
         this.userRepository = userRepository;
         this.paymentRepository = paymentRepository;
