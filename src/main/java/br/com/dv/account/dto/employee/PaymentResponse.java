@@ -1,4 +1,4 @@
-package br.com.dv.account.dto;
+package br.com.dv.account.dto.employee;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,7 +1,7 @@
-package br.com.dv.account.service.validation;
+package br.com.dv.account.validation;
 
-import br.com.dv.account.dto.PasswordChangeRequest;
-import br.com.dv.account.dto.SignupRequest;
+import br.com.dv.account.dto.auth.PasswordChangeRequest;
+import br.com.dv.account.dto.auth.SignupRequest;
 import br.com.dv.account.exception.custom.*;
 import br.com.dv.account.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

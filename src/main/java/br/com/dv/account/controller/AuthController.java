@@ -1,10 +1,10 @@
 package br.com.dv.account.controller;
 
-import br.com.dv.account.dto.PasswordChangeRequest;
-import br.com.dv.account.dto.PasswordChangeResponse;
-import br.com.dv.account.dto.SignupRequest;
-import br.com.dv.account.dto.SignupResponse;
-import br.com.dv.account.service.AuthService;
+import br.com.dv.account.dto.auth.PasswordChangeRequest;
+import br.com.dv.account.dto.auth.PasswordChangeResponse;
+import br.com.dv.account.dto.auth.SignupRequest;
+import br.com.dv.account.dto.auth.SignupResponse;
+import br.com.dv.account.service.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
