@@ -1,7 +1,7 @@
 package br.com.dv.account.mapper;
 
-import br.com.dv.account.dto.PaymentResponse;
-import br.com.dv.account.dto.PaymentUploadRequest;
+import br.com.dv.account.dto.employee.PaymentResponse;
+import br.com.dv.account.dto.accounting.PaymentUploadRequest;
 import br.com.dv.account.entity.Payment;
 import br.com.dv.account.util.PeriodAndCurrencyFormatter;
 import org.mapstruct.Mapper;

@@ -1,8 +1,8 @@
 package br.com.dv.account.controller;
 
-import br.com.dv.account.dto.PaymentUploadRequest;
-import br.com.dv.account.dto.PaymentUploadResponse;
-import br.com.dv.account.service.AccountingService;
+import br.com.dv.account.dto.accounting.PaymentUploadRequest;
+import br.com.dv.account.dto.accounting.PaymentUploadResponse;
+import br.com.dv.account.service.accounting.AccountingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
