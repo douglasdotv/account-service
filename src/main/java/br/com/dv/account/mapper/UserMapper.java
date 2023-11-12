@@ -16,10 +16,10 @@ public abstract class UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "payments", ignore = true)
-    public abstract User signupRequestToUser(SignupRequest signupRequest);
+    public abstract User mapToUser(SignupRequest signupRequest);
 
     @Mapping(target = "userId", source = "id")
-    public abstract SignupResponse userToSignupResponse(User user);
+    public abstract SignupResponse mapToSignupResponse(User user);
 
     @Mapping(target = "email", expression = EMAIL_TO_LOWERCASE_EXPRESSION)
     @Mapping(target = "status", constant = PASSWORD_UPDATE_SUCCESS_MESSAGE)

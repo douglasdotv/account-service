@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private List<PaymentResponse> mapPaymentsToResponse(List<Payment> payments) {
-        return paymentMapper.paymentListToPaymentResponseList(payments);
+        return paymentMapper.mapToPaymentResponseList(payments);
     }
 
 }

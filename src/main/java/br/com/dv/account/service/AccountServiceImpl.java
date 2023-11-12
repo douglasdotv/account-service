@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     public PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest) {
         accountValidationService.validatePayments(paymentsRequest);
 
-        List<Payment> payments = paymentMapper.paymentUploadRequestListToPaymentList(paymentsRequest);
+        List<Payment> payments = paymentMapper.mapToPaymentList(paymentsRequest);
         payments.forEach(payment -> {
             User employee = userRepository.findByEmailIgnoreCase(payment.getEmployeeEmail())
                     .orElseThrow(() -> new EmployeeNotFoundException(payment.getEmployeeEmail()));
