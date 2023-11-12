@@ -40,9 +40,13 @@ public class GlobalExceptionHandler {
             UserEmailAlreadyExistsException.class,
             PasswordLengthException.class,
             BreachedPasswordException.class,
-            SamePasswordException.class
+            SamePasswordException.class,
+            EmployeeNotFoundException.class,
+            PaymentNotFoundException.class,
+            InvalidPeriodException.class,
+            NonUniqueEmployeePeriodPairException.class
     })
-    public ResponseEntity<CustomErrorResponse> handleUserValidationExceptions(Exception ex, WebRequest request) {
+    public ResponseEntity<CustomErrorResponse> handleExceptions(Exception ex, WebRequest request) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
