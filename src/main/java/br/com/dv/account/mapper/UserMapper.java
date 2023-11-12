@@ -13,7 +13,9 @@ public abstract class UserMapper {
     private static final String EMAIL_TO_LOWERCASE_EXPRESSION = "java(user.getEmail().toLowerCase())";
     private static final String PASSWORD_UPDATE_SUCCESS_MESSAGE = "The password has been successfully updated.";
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "payments", ignore = true)
     public abstract User signupRequestToUser(SignupRequest signupRequest);
 
     @Mapping(target = "userId", source = "id")
