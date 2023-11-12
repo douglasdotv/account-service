@@ -11,6 +11,7 @@ import br.com.dv.account.repository.UserRepository;
 import br.com.dv.account.service.validation.UserValidationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -31,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public SignupResponse signUp(SignupRequest signupRequest) {
         userValidationService.validateSignup(signupRequest);
 
@@ -42,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public PasswordChangeResponse changePassword(PasswordChangeRequest passwordChangeRequest,
                                                  String userEmail,
                                                  String currentPassword) {
