@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<PaymentResponse> getPaymentOrPayments(String employeeEmail, String period) {
+    public List<PaymentResponse> getPayments(String employeeEmail, String period) {
         if (period != null) {
             employeeValidationService.validatePeriod(period);
         }

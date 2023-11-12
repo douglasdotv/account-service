@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    List<PaymentResponse> getPaymentOrPayments(String employeeEmail, String period);
+    List<PaymentResponse> getPayments(String employeeEmail, String period);
 
 }

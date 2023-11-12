@@ -23,9 +23,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/payment")
-    public ResponseEntity<List<PaymentResponse>> getPaymentOrPayments(@AuthenticationPrincipal UserDetails userDetails,
-                                                                      @RequestParam(required = false) String period) {
-        List<PaymentResponse> response = employeeService.getPaymentOrPayments(userDetails.getUsername(), period);
+    public ResponseEntity<List<PaymentResponse>> getPayments(@AuthenticationPrincipal UserDetails userDetails,
+                                                             @RequestParam(required = false) String period) {
+        List<PaymentResponse> response = employeeService.getPayments(userDetails.getUsername(), period);
         return ResponseEntity.ok(response);
     }
 
