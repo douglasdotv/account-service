@@ -18,12 +18,12 @@ public class AccountingValidationService {
     private final PaymentRepository paymentRepository;
     private final CommonValidationService commonValidationService;
 
-    public AccountingValidationService(CommonValidationService commonValidationService,
-                                       UserRepository userRepository,
-                                       PaymentRepository paymentRepository) {
-        this.commonValidationService = commonValidationService;
+    public AccountingValidationService(UserRepository userRepository,
+                                       PaymentRepository paymentRepository,
+                                       CommonValidationService commonValidationService) {
         this.userRepository = userRepository;
         this.paymentRepository = paymentRepository;
+        this.commonValidationService = commonValidationService;
     }
 
     public void validatePayment(PaymentUploadRequest payment) {

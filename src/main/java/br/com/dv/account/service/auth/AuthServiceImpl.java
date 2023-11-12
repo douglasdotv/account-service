@@ -17,17 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final UserValidationService userValidationService;
     private final UserMapper userMapper;
+    private final UserValidationService userValidationService;
     private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImpl(UserRepository userRepository,
-                           UserValidationService userValidationService,
                            UserMapper userMapper,
+                           UserValidationService userValidationService,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userValidationService = userValidationService;
         this.userMapper = userMapper;
+        this.userValidationService = userValidationService;
         this.passwordEncoder = passwordEncoder;
     }
 
