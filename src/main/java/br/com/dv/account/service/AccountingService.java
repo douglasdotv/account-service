@@ -5,7 +5,7 @@ import br.com.dv.account.dto.PaymentUploadResponse;
 
 import java.util.List;
 
-public interface AccountService {
+public interface AccountingService {
 
     PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest);
 
