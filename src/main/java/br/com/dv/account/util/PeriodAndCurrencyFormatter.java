@@ -13,6 +13,7 @@ public final class PeriodAndCurrencyFormatter {
         throw new UnsupportedOperationException(CANNOT_BE_INSTANTIATED_MESSAGE);
     }
 
+    @SuppressWarnings("unused")
     public static String convertPeriodToMonthNameAndYearFormat(String period) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PERIOD_PATTERN);
         YearMonth yearMonth = YearMonth.parse(period, formatter);
@@ -21,6 +22,7 @@ public final class PeriodAndCurrencyFormatter {
         return monthName.charAt(0) + monthName.substring(1).toLowerCase() + "-" + year;
     }
 
+    @SuppressWarnings("unused")
     public static String convertSalaryToDollarsAndCents(Long salaryInCents) {
         long dollars = salaryInCents / 100;
         long cents = salaryInCents % 100;
