@@ -31,25 +31,25 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public SignupResponse signUp(SignupRequest signup) {
-        userValidationService.validateSignup(signup);
+    public SignupResponse signUp(SignupRequest signupRequest) {
+        userValidationService.validateSignup(signupRequest);
 
-        User user = userMapper.signupRequestToUser(signup);
-        user.setPassword(passwordEncoder.encode(signup.password()));
+        User user = userMapper.signupRequestToUser(signupRequest);
+        user.setPassword(passwordEncoder.encode(signupRequest.password()));
         User savedUser = userRepository.save(user);
 
         return userMapper.userToSignupResponse(savedUser);
     }
 
     @Override
-    public PasswordChangeResponse changePassword(PasswordChangeRequest passwordChange,
+    public PasswordChangeResponse changePassword(PasswordChangeRequest passwordChangeRequest,
                                                  String userEmail,
                                                  String currentPassword) {
-        userValidationService.validatePasswordChange(passwordChange, currentPassword);
+        userValidationService.validatePasswordChange(passwordChangeRequest, currentPassword);
 
         User user = userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new UserAuthenticationMismatchException(userEmail));
-        user.setPassword(passwordEncoder.encode(passwordChange.newPassword()));
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.newPassword()));
         User savedUser = userRepository.save(user);
 
         return userMapper.userToPasswordChangeResponse(savedUser);
