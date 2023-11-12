@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/actuator/shutdown")).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/auth/signup")).permitAll()
+                        .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/acct/payments")).permitAll()
+                        .requestMatchers(mvc.pattern(HttpMethod.PUT, "/api/acct/payments")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
