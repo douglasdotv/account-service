@@ -19,6 +19,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             """)
     List<Payment> findAllByEmployeeEmailOrderByPeriodDescIgnoreCase(@Param("employeeEmail") String employeeEmail);
 
-    boolean existsByEmployeeEmailAndPeriod(String employeeEmail, String period);
+    boolean existsByEmployeeEmailIgnoreCaseAndPeriod(String employeeEmail, String period);
 
 }
