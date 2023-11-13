@@ -68,7 +68,7 @@ public class AccountingValidationService {
         payments.forEach(payment -> {
             String employeeEmail = payment.employeeEmail();
             String period = payment.period();
-            boolean existsInDb = paymentRepository.existsByEmployeeEmailAndPeriod(employeeEmail, period);
+            boolean existsInDb = paymentRepository.existsByEmployeeEmailIgnoreCaseAndPeriod(employeeEmail, period);
             if (existsInDb) {
                 throw new NonUniqueEmployeePeriodPairException(employeeEmail, period);
             }
