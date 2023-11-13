@@ -17,10 +17,10 @@ public class Payment {
     @Column(name = "email", nullable = false)
     private String employeeEmail;
 
-    @Column(nullable = false)
+    @Column(name = "period", nullable = false)
     private String period;
 
-    @Column(nullable = false)
+    @Column(name = "salary", nullable = false)
     private Long salary;
 
     @ManyToOne
