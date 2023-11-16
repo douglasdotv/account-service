@@ -14,11 +14,17 @@ public class Payment {
     @Column(name = "payment_id", nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "employee_email", nullable = false)
     private String employeeEmail;
 
     @Column(name = "period", nullable = false)
     private String period;
+
+    @Column(name = "period_year", nullable = false)
+    private int periodYear;
+
+    @Column(name = "period_month", nullable = false)
+    private int periodMonth;
 
     @Column(name = "salary", nullable = false)
     private Long salary;
@@ -26,12 +32,6 @@ public class Payment {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User employee;
-
-    @Column(name = "period_year", nullable = false)
-    private int periodYear;
-
-    @Column(name = "period_month", nullable = false)
-    private int periodMonth;
 
     @PrePersist
     @PreUpdate
