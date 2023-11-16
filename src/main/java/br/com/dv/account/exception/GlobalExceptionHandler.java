@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
             InvalidPeriodException.class,
             NonUniqueEmployeePeriodPairException.class
     })
-    public ResponseEntity<CustomErrorResponse> handleExceptions(Exception ex, WebRequest request) {
+    public ResponseEntity<CustomErrorResponse> handleBadRequest(Exception ex, WebRequest request) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -56,6 +56,19 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleNotFound(Exception ex, WebRequest request) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserAuthenticationMismatchException.class)
