@@ -2,6 +2,7 @@ package br.com.dv.account.validation;
 
 import br.com.dv.account.dto.accounting.PaymentUploadRequest;
 import br.com.dv.account.exception.custom.EmployeeNotFoundException;
+import br.com.dv.account.exception.custom.NegativeSalaryException;
 import br.com.dv.account.exception.custom.NonUniqueEmployeePeriodPairException;
 import br.com.dv.account.repository.PaymentRepository;
 import br.com.dv.account.repository.UserRepository;
@@ -28,6 +29,7 @@ public class AccountingValidationService {
 
     public void validatePayment(PaymentUploadRequest payment) {
         validatePeriod(payment.period());
+        validateSalary(payment.salary());
         validateEmployeeExists(payment.employeeEmail());
     }
 
@@ -38,6 +40,12 @@ public class AccountingValidationService {
 
     private void validatePeriod(String period) {
         commonValidationService.validatePeriod(period);
+    }
+
+    private void validateSalary(Long salary) {
+        if (salary < 0) {
+            throw new NegativeSalaryException(salary);
+        }
     }
 
     private void validateEmployeeExists(String email) {
