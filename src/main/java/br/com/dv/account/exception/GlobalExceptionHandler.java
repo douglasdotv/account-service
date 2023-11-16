@@ -44,7 +44,12 @@ public class GlobalExceptionHandler {
             EmployeeNotFoundException.class,
             PaymentNotFoundException.class,
             InvalidPeriodException.class,
-            NonUniqueEmployeePeriodPairException.class
+            NegativeSalaryException.class,
+            NonUniqueEmployeePeriodPairException.class,
+            AdminRestrictionException.class,
+            RoleNotAssignedException.class,
+            LastRoleException.class,
+            RoleConflictException.class
     })
     public ResponseEntity<CustomErrorResponse> handleBadRequest(Exception ex, WebRequest request) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(
@@ -58,7 +63,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(RoleNotFoundException.class)
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            RoleNotFoundException.class
+    })
     public ResponseEntity<CustomErrorResponse> handleNotFound(Exception ex, WebRequest request) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
