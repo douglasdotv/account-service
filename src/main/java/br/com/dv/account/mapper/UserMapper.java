@@ -1,11 +1,14 @@
 package br.com.dv.account.mapper;
 
+import br.com.dv.account.dto.admin.AdminUserResponse;
 import br.com.dv.account.dto.auth.PasswordChangeResponse;
 import br.com.dv.account.dto.auth.SignupRequest;
 import br.com.dv.account.dto.auth.SignupResponse;
 import br.com.dv.account.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
@@ -29,5 +32,13 @@ public abstract class UserMapper {
     @Mapping(target = "email", expression = EMAIL_TO_LOWERCASE_EXPRESSION)
     @Mapping(target = "status", constant = PASSWORD_UPDATE_SUCCESS_MESSAGE)
     public abstract PasswordChangeResponse mapToPasswordChangeResponse(User user);
+
+    @SuppressWarnings("unused")
+    @Mapping(target = "userId", source = "id")
+    @Mapping(target = "email", expression = EMAIL_TO_LOWERCASE_EXPRESSION)
+    @Mapping(target = "roles", expression = TO_LIST_OF_ROLES_EXPRESSION)
+    public abstract AdminUserResponse mapToAdminUserResponse(User user);
+
+    public abstract List<AdminUserResponse> mapToAdminUserResponseList(List<User> users);
 
 }
