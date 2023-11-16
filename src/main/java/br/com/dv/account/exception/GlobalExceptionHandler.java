@@ -17,42 +17,35 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex,
-                                                                          WebRequest request) {
-        String fieldErrorsMessage = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
+    public ResponseEntity<CustomErrorResponse> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException ex,
+            WebRequest request
+    ) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining(", "));
 
-        CustomErrorResponse errorResponse = new CustomErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                fieldErrorsMessage,
-                ((ServletWebRequest) request).getRequest().getRequestURI()
-        );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, message, request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<CustomErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
-                                                                         WebRequest request) {
-        String errorsMessage = ex.getConstraintViolations()
-                .stream()
+    public ResponseEntity<CustomErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException ex,
+            WebRequest request
+    ) {
+        String message = ex.getConstraintViolations().stream()
                 .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
                 .collect(Collectors.joining(", "));
 
-        CustomErrorResponse errorResponse = new CustomErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                errorsMessage,
-                ((ServletWebRequest) request).getRequest().getRequestURI()
-        );
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, message, request);
+    }
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(UserAuthenticationMismatchException.class)
+    public ResponseEntity<CustomErrorResponse> handleUserAuthenticationMismatchException(
+            UserAuthenticationMismatchException ex,
+            WebRequest request
+    ) {
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request);
     }
 
     @ExceptionHandler({
@@ -71,48 +64,32 @@ public class GlobalExceptionHandler {
             LastRoleException.class,
             RoleConflictException.class
     })
-    public ResponseEntity<CustomErrorResponse> handleBadRequest(Exception ex, WebRequest request) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                ex.getMessage(),
-                ((ServletWebRequest) request).getRequest().getRequestURI()
-        );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<CustomErrorResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     @ExceptionHandler({
             UserNotFoundException.class,
             RoleNotFoundException.class
     })
-    public ResponseEntity<CustomErrorResponse> handleNotFound(Exception ex, WebRequest request) {
-        CustomErrorResponse errorResponse = new CustomErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                ((ServletWebRequest) request).getRequest().getRequestURI()
-        );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    public ResponseEntity<CustomErrorResponse> handleNotFoundExceptions(Exception ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
-    @ExceptionHandler(UserAuthenticationMismatchException.class)
-    public ResponseEntity<CustomErrorResponse> handleUserAuthenticationMismatchException(
-            UserAuthenticationMismatchException ex,
-            WebRequest request
-    ) {
+    private ResponseEntity<CustomErrorResponse> buildResponseEntity(HttpStatus status, String msg, WebRequest req) {
         CustomErrorResponse errorResponse = new CustomErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                ex.getMessage(),
-                ((ServletWebRequest) request).getRequest().getRequestURI()
+                status.value(),
+                status.getReasonPhrase(),
+                msg,
+                extractRequestUri(req)
         );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
+    private String extractRequestUri(WebRequest req) {
+        return ((ServletWebRequest) req).getRequest().getRequestURI();
     }
 
     public record CustomErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
