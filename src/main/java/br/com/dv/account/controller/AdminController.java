@@ -34,7 +34,7 @@ public class AdminController {
 
     @PutMapping("/user/role")
     public ResponseEntity<AdminUserResponse> updateUserRole(@Valid @RequestBody RoleUpdateRequest request) {
-        AdminUserResponse response = adminService.updateUserRole(request);
+        AdminUserResponse response = adminService.updateUserRoles(request);
         return ResponseEntity.ok(response);
     }
 
