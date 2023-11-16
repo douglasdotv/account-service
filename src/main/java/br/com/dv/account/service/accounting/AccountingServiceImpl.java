@@ -4,6 +4,7 @@ import br.com.dv.account.dto.accounting.PaymentUploadRequest;
 import br.com.dv.account.dto.accounting.PaymentUploadResponse;
 import br.com.dv.account.entity.Payment;
 import br.com.dv.account.entity.User;
+import br.com.dv.account.enums.StatusMessage;
 import br.com.dv.account.exception.custom.EmployeeNotFoundException;
 import br.com.dv.account.exception.custom.PaymentNotFoundException;
 import br.com.dv.account.mapper.PaymentMapper;
@@ -15,11 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
 @Service
 public class AccountingServiceImpl implements AccountingService {
-
-    private static final String ADDED_SUCCESSFULLY_STATUS = "Added successfully!";
-    private static final String UPDATED_SUCCESSFULLY_STATUS = "Updated successfully!";
 
     private final UserRepository userRepository;
     private final PaymentRepository paymentRepository;
@@ -50,7 +49,7 @@ public class AccountingServiceImpl implements AccountingService {
         });
         paymentRepository.saveAll(payments);
 
-        return new PaymentUploadResponse(ADDED_SUCCESSFULLY_STATUS);
+        return new PaymentUploadResponse(StatusMessage.ADDED_SUCCESSFULLY);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class AccountingServiceImpl implements AccountingService {
         payment.setSalary(paymentRequest.salary());
         paymentRepository.save(payment);
 
-        return new PaymentUploadResponse(UPDATED_SUCCESSFULLY_STATUS);
+        return new PaymentUploadResponse(StatusMessage.UPDATED_SUCCESSFULLY);
     }
 
 }

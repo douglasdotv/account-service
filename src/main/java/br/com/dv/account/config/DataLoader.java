@@ -1,16 +1,13 @@
 package br.com.dv.account.config;
 
 import br.com.dv.account.entity.Role;
+import br.com.dv.account.enums.RoleType;
 import br.com.dv.account.repository.RoleRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader {
-
-    private static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
-    private static final String ROLE_USER = "ROLE_USER";
-    private static final String ROLE_ACCOUNTANT = "ROLE_ACCOUNTANT";
 
     private final RoleRepository roleRepository;
 
@@ -20,14 +17,14 @@ public class DataLoader {
 
     @PostConstruct
     public void initRoles() {
-        createRoleIfNotFound(ROLE_ADMINISTRATOR);
-        createRoleIfNotFound(ROLE_USER);
-        createRoleIfNotFound(ROLE_ACCOUNTANT);
+        createRoleIfNotFound(RoleType.ADMINISTRATOR);
+        createRoleIfNotFound(RoleType.USER);
+        createRoleIfNotFound(RoleType.ACCOUNTANT);
     }
 
-    private void createRoleIfNotFound(String roleName) {
-        if (roleRepository.findByName(roleName).isEmpty()) {
-            roleRepository.save(new Role(roleName));
+    private void createRoleIfNotFound(RoleType role) {
+        if (roleRepository.findByName(role.getName()).isEmpty()) {
+            roleRepository.save(new Role(role.getName()));
         }
     }
 

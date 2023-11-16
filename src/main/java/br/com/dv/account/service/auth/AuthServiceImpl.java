@@ -6,6 +6,7 @@ import br.com.dv.account.dto.auth.SignupRequest;
 import br.com.dv.account.dto.auth.SignupResponse;
 import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
+import br.com.dv.account.enums.RoleType;
 import br.com.dv.account.exception.custom.RoleNotFoundException;
 import br.com.dv.account.exception.custom.UserAuthenticationMismatchException;
 import br.com.dv.account.mapper.UserMapper;
@@ -18,9 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
-    private static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
-    private static final String ROLE_USER = "ROLE_USER";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -72,8 +70,8 @@ public class AuthServiceImpl implements AuthService {
     private Role getSignupUserRole() {
         long userCount = userRepository.count();
         String roleName = userCount == 0
-                ? ROLE_ADMINISTRATOR
-                : ROLE_USER;
+                ? RoleType.ADMINISTRATOR.getName()
+                : RoleType.USER.getName();
         return roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException(roleName));
     }
 

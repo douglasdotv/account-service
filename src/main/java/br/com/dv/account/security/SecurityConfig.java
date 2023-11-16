@@ -1,5 +1,6 @@
 package br.com.dv.account.security;
 
+import br.com.dv.account.enums.RoleType;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,8 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/actuator/shutdown")).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/auth/signup")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/acct/**")).hasRole("ACCOUNTANT")
-                        .requestMatchers(mvc.pattern("/api/admin/**")).hasRole("ADMINISTRATOR")
+                        .requestMatchers(mvc.pattern("/api/acct/**")).hasRole(RoleType.ACCOUNTANT.name())
+                        .requestMatchers(mvc.pattern("/api/admin/**")).hasRole(RoleType.ADMINISTRATOR.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
