@@ -7,6 +7,7 @@ import br.com.dv.account.mapper.PaymentMapper;
 import br.com.dv.account.repository.PaymentRepository;
 import br.com.dv.account.validation.EmployeeValidationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PaymentResponse> getPayments(String employeeEmail, String period) {
         if (period != null) {
             employeeValidationService.validatePeriod(period);
