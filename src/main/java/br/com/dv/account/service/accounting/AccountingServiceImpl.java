@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @Service
 public class AccountingServiceImpl implements AccountingService {
@@ -40,13 +40,10 @@ public class AccountingServiceImpl implements AccountingService {
     public PaymentUploadResponse addPayments(List<PaymentUploadRequest> paymentsRequest) {
         accountingValidationService.validatePayments(paymentsRequest);
 
-        List<Payment> payments = paymentMapper.mapToPaymentList(paymentsRequest);
-        payments.forEach(payment -> {
-            User employee = userRepository.findByEmailIgnoreCase(payment.getEmployeeEmail())
-                    .orElseThrow(() -> new EmployeeNotFoundException(payment.getEmployeeEmail()));
+        List<Payment> payments = paymentsRequest.stream()
+                .map(this::mapAndSetEmployeeToPayment)
+                .collect(Collectors.toList());
 
-            employee.addPayment(payment);
-        });
         paymentRepository.saveAll(payments);
 
         return new PaymentUploadResponse(StatusMessage.ADDED_SUCCESSFULLY);
@@ -57,14 +54,29 @@ public class AccountingServiceImpl implements AccountingService {
     public PaymentUploadResponse updatePayment(PaymentUploadRequest paymentRequest) {
         accountingValidationService.validatePayment(paymentRequest);
 
-        Payment payment = paymentRepository.findByEmployeeEmailIgnoreCaseAndPeriod(paymentRequest.employeeEmail(),
-                        paymentRequest.period())
-                .orElseThrow(() -> new PaymentNotFoundException(paymentRequest.employeeEmail(),
-                        paymentRequest.period()));
+        Payment payment = findPaymentByEmployeeEmailAndPeriod(paymentRequest.employeeEmail(), paymentRequest.period());
         payment.setSalary(paymentRequest.salary());
+
         paymentRepository.save(payment);
 
         return new PaymentUploadResponse(StatusMessage.UPDATED_SUCCESSFULLY);
+    }
+
+    private Payment mapAndSetEmployeeToPayment(PaymentUploadRequest paymentRequest) {
+        Payment payment = paymentMapper.mapToPayment(paymentRequest);
+        User employee = findUserByEmail(paymentRequest.employeeEmail());
+        employee.addPayment(payment);
+        return payment;
+    }
+
+    private Payment findPaymentByEmployeeEmailAndPeriod(String email, String period) {
+        return paymentRepository.findByEmployeeEmailIgnoreCaseAndPeriod(email, period)
+                .orElseThrow(() -> new PaymentNotFoundException(email, period));
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new EmployeeNotFoundException(email));
     }
 
 }
