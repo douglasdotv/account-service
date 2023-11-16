@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
 @Getter @Setter
@@ -37,7 +39,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private SortedSet<Role> roles = new TreeSet<>();
 
     public void addPayment(Payment payment) {
         this.payments.add(payment);
