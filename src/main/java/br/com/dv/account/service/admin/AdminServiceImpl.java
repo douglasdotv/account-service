@@ -40,6 +40,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AdminUserResponse> getUsers() {
         List<User> users = userRepository.findAllByOrderByIdAsc();
         return userMapper.mapToAdminUserResponseList(users);
