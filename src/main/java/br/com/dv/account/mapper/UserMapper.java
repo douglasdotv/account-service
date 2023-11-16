@@ -15,7 +15,7 @@ public abstract class UserMapper {
 
     private static final String EMAIL_TO_LOWERCASE_EXPRESSION = "java(user.getEmail().toLowerCase())";
     private static final String TO_LIST_OF_ROLES_EXPRESSION =
-            "java(user.getRoles().stream().map(Role::getName).sorted().collect(java.util.stream.Collectors.toList()))";
+            "java(user.getRoles().stream().map(Role::getName).collect(java.util.stream.Collectors.toList()))";
     private static final String PASSWORD_UPDATE_SUCCESS_MESSAGE = "The password has been successfully updated.";
 
     @Mapping(target = "id", ignore = true)
