@@ -1,6 +1,7 @@
 package br.com.dv.account.exception;
 
 import br.com.dv.account.exception.custom.*;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +30,25 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 fieldErrorsMessage,
+                ((ServletWebRequest) request).getRequest().getRequestURI()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<CustomErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
+                                                                         WebRequest request) {
+        String errorsMessage = ex.getConstraintViolations()
+                .stream()
+                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                .collect(Collectors.joining(", "));
+
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                errorsMessage,
                 ((ServletWebRequest) request).getRequest().getRequestURI()
         );
 
