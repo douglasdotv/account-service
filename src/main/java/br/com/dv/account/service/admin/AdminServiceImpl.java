@@ -48,36 +48,40 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public UserDeletionResponse deleteUser(String userEmail) {
-        User user = userRepository.findByEmailIgnoreCase(userEmail)
-                .orElseThrow(() -> new UserNotFoundException(userEmail));
-
+        User user = findUserByEmail(userEmail);
         roleValidationService.ensureUserIsNotRoleAdminBeforeDeletion(user);
         userRepository.delete(user);
-
         return new UserDeletionResponse(userEmail, StatusMessage.DELETED_SUCCESSFULLY);
     }
 
     @Override
     @Transactional
-    public AdminUserResponse updateUserRole(RoleUpdateRequest roleUpdateRequest) {
-        User user = userRepository.findByEmailIgnoreCase(roleUpdateRequest.userEmail())
-                .orElseThrow(() -> new UserNotFoundException(roleUpdateRequest.userEmail()));
+    public AdminUserResponse updateUserRoles(RoleUpdateRequest roleUpdateRequest) {
+        User user = findUserByEmail(roleUpdateRequest.userEmail());
+        Role role = findRoleByName(roleUpdateRequest.role());
 
         roleValidationService.validateRoleUpdate(roleUpdateRequest, user);
+        applyRoleUpdateToUser(user, role, roleUpdateRequest);
+        userRepository.save(user);
 
-        Role role = roleRepository.findByName(ROLE_PREFIX + roleUpdateRequest.role())
-                .orElseThrow(() -> new RoleNotFoundException(roleUpdateRequest.role()));
+        return userMapper.mapToAdminUserResponse(user);
+    }
 
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    private Role findRoleByName(String role) {
+        return roleRepository.findByName(ROLE_PREFIX + role).orElseThrow(() -> new RoleNotFoundException(role));
+    }
+
+    private void applyRoleUpdateToUser(User user, Role role, RoleUpdateRequest roleUpdateRequest) {
         AdminOperation operation = roleUpdateRequest.operation();
         if (operation == AdminOperation.REMOVE) {
             user.getRoles().remove(role);
         } else if (operation == AdminOperation.GRANT) {
             user.getRoles().add(role);
         }
-
-        userRepository.save(user);
-
-        return userMapper.mapToAdminUserResponse(user);
     }
 
 }

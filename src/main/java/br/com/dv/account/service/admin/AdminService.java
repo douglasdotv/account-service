@@ -12,6 +12,6 @@ public interface AdminService {
 
     UserDeletionResponse deleteUser(String userEmail);
 
-    AdminUserResponse updateUserRole(RoleUpdateRequest roleUpdateRequest);
+    AdminUserResponse updateUserRoles(RoleUpdateRequest roleUpdateRequest);
 
 }
