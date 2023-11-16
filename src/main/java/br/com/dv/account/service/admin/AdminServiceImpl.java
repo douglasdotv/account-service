@@ -5,6 +5,8 @@ import br.com.dv.account.dto.admin.RoleUpdateRequest;
 import br.com.dv.account.dto.admin.UserDeletionResponse;
 import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
+import br.com.dv.account.enums.AdminOperation;
+import br.com.dv.account.enums.StatusMessage;
 import br.com.dv.account.exception.custom.RoleNotFoundException;
 import br.com.dv.account.exception.custom.UserNotFoundException;
 import br.com.dv.account.mapper.UserMapper;
@@ -19,10 +21,7 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    private static final String DELETED_SUCCESSFULLY_STATUS = "Deleted successfully!";
     private static final String ROLE_PREFIX = "ROLE_";
-    private static final String REMOVE_OPERATION = "REMOVE";
-    private static final String GRANT_OPERATION = "GRANT";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -51,11 +50,9 @@ public class AdminServiceImpl implements AdminService {
     public UserDeletionResponse deleteUser(String userEmail) {
         User user = userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));
-
         roleValidationService.validateUserDeletion(user);
         userRepository.delete(user);
-
-        return new UserDeletionResponse(userEmail, DELETED_SUCCESSFULLY_STATUS);
+        return new UserDeletionResponse(userEmail, StatusMessage.DELETED_SUCCESSFULLY);
     }
 
     @Override
@@ -66,12 +63,13 @@ public class AdminServiceImpl implements AdminService {
 
         roleValidationService.validateRoleUpdate(roleUpdateRequest, user);
 
-        Role role = roleRepository.findByName(ROLE_PREFIX + roleUpdateRequest.roleName())
-                .orElseThrow(() -> new RoleNotFoundException(roleUpdateRequest.roleName()));
+        Role role = roleRepository.findByName(ROLE_PREFIX + roleUpdateRequest.role())
+                .orElseThrow(() -> new RoleNotFoundException(roleUpdateRequest.role()));
 
-        if (roleUpdateRequest.operation().equals(REMOVE_OPERATION)) {
+        AdminOperation operation = roleUpdateRequest.operation();
+        if (operation == AdminOperation.REMOVE) {
             user.getRoles().remove(role);
-        } else if (roleUpdateRequest.operation().equals(GRANT_OPERATION)) {
+        } else if (operation == AdminOperation.GRANT) {
             user.getRoles().add(role);
         }
 
