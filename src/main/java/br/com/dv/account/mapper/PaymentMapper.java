@@ -17,6 +17,13 @@ public abstract class PaymentMapper {
     private static final String PERIOD_CONVERSION_EXPRESSION =
             "java(PeriodAndCurrencyFormatter.convertPeriodToMonthNameAndYearFormat(payment.getPeriod()))";
 
+    @SuppressWarnings("unused")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "employee", ignore = true)
+    @Mapping(target = "periodYear", ignore = true)
+    @Mapping(target = "periodMonth", ignore = true)
+    public abstract Payment mapToPayment(PaymentUploadRequest paymentRequest);
+
     public abstract List<Payment> mapToPaymentList(List<PaymentUploadRequest> paymentsRequest);
 
     @SuppressWarnings("unused")
