@@ -23,6 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/payment")
+    @PreAuthorize("hasRole('USER') or hasRole('ACCOUNTANT')")
     public ResponseEntity<List<PaymentResponse>> getPayments(@AuthenticationPrincipal UserDetails userDetails,
                                                              @RequestParam(required = false) String period) {
         List<PaymentResponse> response = employeeService.getPayments(userDetails.getUsername(), period);
