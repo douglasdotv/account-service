@@ -7,6 +7,7 @@ import br.com.dv.account.dto.auth.SignupResponse;
 import br.com.dv.account.service.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/changepass")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'USER', 'ACCOUNTANT')")
     public ResponseEntity<PasswordChangeResponse> changePassword(@Valid @RequestBody PasswordChangeRequest request,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         PasswordChangeResponse response = authService.changePassword(
