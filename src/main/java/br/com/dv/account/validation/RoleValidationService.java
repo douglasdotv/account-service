@@ -18,7 +18,7 @@ public class RoleValidationService {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    public void validateUserDeletion(User user) {
+    public void ensureUserIsNotRoleAdminBeforeDeletion(User user) {
         if (isAdmin(user)) {
             throw new AdminRestrictionException();
         }

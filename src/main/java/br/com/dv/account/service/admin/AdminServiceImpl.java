@@ -50,8 +50,10 @@ public class AdminServiceImpl implements AdminService {
     public UserDeletionResponse deleteUser(String userEmail) {
         User user = userRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));
-        roleValidationService.validateUserDeletion(user);
+
+        roleValidationService.ensureUserIsNotRoleAdminBeforeDeletion(user);
         userRepository.delete(user);
+
         return new UserDeletionResponse(userEmail, StatusMessage.DELETED_SUCCESSFULLY);
     }
 
