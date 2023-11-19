@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/auth/signup")).permitAll()
                         .requestMatchers(mvc.pattern("/api/acct/**")).hasRole(RoleType.ACCOUNTANT.name())
                         .requestMatchers(mvc.pattern("/api/admin/**")).hasRole(RoleType.ADMINISTRATOR.name())
+                        .requestMatchers(mvc.pattern("/api/security/**")).hasRole(RoleType.AUDITOR.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
