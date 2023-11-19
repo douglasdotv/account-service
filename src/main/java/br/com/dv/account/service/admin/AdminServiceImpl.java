@@ -11,6 +11,7 @@ import br.com.dv.account.exception.custom.UserNotFoundException;
 import br.com.dv.account.mapper.UserMapper;
 import br.com.dv.account.repository.RoleRepository;
 import br.com.dv.account.repository.UserRepository;
+import br.com.dv.account.service.securityevent.logger.SecurityEventLogger;
 import br.com.dv.account.validation.RoleValidationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +30,18 @@ public class AdminServiceImpl implements AdminService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final RoleValidationService roleValidationService;
+    private final SecurityEventLogger securityEventLogger;
 
     public AdminServiceImpl(UserRepository userRepository,
                             UserMapper userMapper,
                             RoleRepository roleRepository,
-                            RoleValidationService roleValidationService) {
+                            RoleValidationService roleValidationService,
+                            SecurityEventLogger securityEventLogger) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.roleValidationService = roleValidationService;
+        this.securityEventLogger = securityEventLogger;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class AdminServiceImpl implements AdminService {
         User user = findUserByEmail(userEmail);
         roleValidationService.ensureUserIsNotRoleAdminBeforeDeletion(user);
         userRepository.delete(user);
+        securityEventLogger.logDeleteUserEvent(userEmail);
         return new UserDeletionResponse(userEmail, StatusMessage.DELETED_SUCCESSFULLY);
     }
 
@@ -66,6 +71,9 @@ public class AdminServiceImpl implements AdminService {
         applyRoleUpdateToUser(user, role, roleUpdateRequest);
         userRepository.save(user);
 
+        securityEventLogger.logRoleUpdateEvent(user.getEmail(), roleUpdateRequest.role(),
+                roleUpdateRequest.operation());
+
         return userMapper.mapToAdminUserResponse(user);
     }
 
@@ -77,6 +85,8 @@ public class AdminServiceImpl implements AdminService {
         roleValidationService.ensureUserIsNotRoleAdminBeforeLock(user);
         applyAccessUpdateToUser(user, accessUpdateRequest);
         userRepository.save(user);
+
+        securityEventLogger.logUserAccessUpdateEvent(user.getEmail(), accessUpdateRequest.operation());
 
         String responseStatusMessage = getAccessUpdateStatusMessage(user, accessUpdateRequest.operation());
         return new AccessUpdateResponse(responseStatusMessage);
