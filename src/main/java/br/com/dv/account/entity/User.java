@@ -30,6 +30,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "is_locked", nullable = false)
+    private boolean isLocked = false;
+
     @OneToMany(mappedBy = "employee")
     private Set<Payment> payments = new HashSet<>();
 
