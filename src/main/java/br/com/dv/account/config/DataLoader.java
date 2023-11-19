@@ -20,6 +20,7 @@ public class DataLoader {
         createRoleIfNotFound(RoleType.ADMINISTRATOR);
         createRoleIfNotFound(RoleType.USER);
         createRoleIfNotFound(RoleType.ACCOUNTANT);
+        createRoleIfNotFound(RoleType.AUDITOR);
     }
 
     private void createRoleIfNotFound(RoleType role) {
