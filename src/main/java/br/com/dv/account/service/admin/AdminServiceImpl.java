@@ -5,7 +5,7 @@ import br.com.dv.account.dto.admin.RoleUpdateRequest;
 import br.com.dv.account.dto.admin.UserDeletionResponse;
 import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
-import br.com.dv.account.enums.AdminOperation;
+import br.com.dv.account.enums.UserRoleOperation;
 import br.com.dv.account.enums.StatusMessage;
 import br.com.dv.account.exception.custom.RoleNotFoundException;
 import br.com.dv.account.exception.custom.UserNotFoundException;
@@ -76,10 +76,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private void applyRoleUpdateToUser(User user, Role role, RoleUpdateRequest roleUpdateRequest) {
-        AdminOperation operation = roleUpdateRequest.operation();
-        if (operation == AdminOperation.REMOVE) {
+        UserRoleOperation operation = roleUpdateRequest.operation();
+        if (operation == UserRoleOperation.REMOVE) {
             user.getRoles().remove(role);
-        } else if (operation == AdminOperation.GRANT) {
+        } else if (operation == UserRoleOperation.GRANT) {
             user.getRoles().add(role);
         }
     }

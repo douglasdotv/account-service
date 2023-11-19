@@ -3,7 +3,7 @@ package br.com.dv.account.validation;
 import br.com.dv.account.dto.admin.RoleUpdateRequest;
 import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
-import br.com.dv.account.enums.AdminOperation;
+import br.com.dv.account.enums.UserRoleOperation;
 import br.com.dv.account.enums.RoleType;
 import br.com.dv.account.exception.custom.AdminRestrictionException;
 import br.com.dv.account.exception.custom.LastRoleException;
@@ -25,12 +25,12 @@ public class RoleValidationService {
     }
 
     public void validateRoleUpdate(RoleUpdateRequest roleUpdate, User user) {
-        AdminOperation operation = roleUpdate.operation();
-        if (operation == AdminOperation.REMOVE) {
+        UserRoleOperation operation = roleUpdate.operation();
+        if (operation == UserRoleOperation.REMOVE) {
             checkAdminRoleNotRemovable(user);
             checkRoleAssignedBeforeRemoval(roleUpdate, user);
             checkLastRoleBeforeRemoval(roleUpdate, user);
-        } else if (operation == AdminOperation.GRANT) {
+        } else if (operation == UserRoleOperation.GRANT) {
             checkRoleGrantConflict(roleUpdate, user);
         }
     }
