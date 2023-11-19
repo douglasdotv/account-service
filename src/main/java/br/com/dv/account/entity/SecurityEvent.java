@@ -17,7 +17,7 @@ public class SecurityEvent {
     private Long id;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "action", nullable = false)
@@ -31,5 +31,16 @@ public class SecurityEvent {
 
     @Column(name = "path", nullable = false)
     private String path;
+
+    protected SecurityEvent() {
+    }
+
+    public SecurityEvent(SecurityAction action, String subject, String object, String path) {
+        this.date = LocalDateTime.now();
+        this.action = action;
+        this.subject = subject;
+        this.object = object;
+        this.path = path;
+    }
 
 }
