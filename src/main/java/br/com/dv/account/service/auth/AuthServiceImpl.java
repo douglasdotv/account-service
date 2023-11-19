@@ -12,6 +12,7 @@ import br.com.dv.account.exception.custom.UserAuthenticationMismatchException;
 import br.com.dv.account.mapper.UserMapper;
 import br.com.dv.account.repository.RoleRepository;
 import br.com.dv.account.repository.UserRepository;
+import br.com.dv.account.service.securityevent.logger.SecurityEventLogger;
 import br.com.dv.account.validation.UserValidationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,17 +26,20 @@ public class AuthServiceImpl implements AuthService {
     private final UserValidationService userValidationService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityEventLogger securityEventLogger;
 
     public AuthServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
                            UserValidationService userValidationService,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           SecurityEventLogger securityEventLogger) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userValidationService = userValidationService;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.securityEventLogger = securityEventLogger;
     }
 
     @Override
@@ -48,6 +52,8 @@ public class AuthServiceImpl implements AuthService {
         Role role = getSignupUserRole();
         user.getRoles().add(role);
         User savedUser = userRepository.save(user);
+
+        securityEventLogger.logCreateUserEvent(user.getEmail());
 
         return userMapper.mapToSignupResponse(savedUser);
     }
@@ -63,6 +69,8 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UserAuthenticationMismatchException(userEmail));
         user.setPassword(passwordEncoder.encode(passwordChangeRequest.newPassword()));
         User savedUser = userRepository.save(user);
+
+        securityEventLogger.logChangePasswordEvent(user.getEmail());
 
         return userMapper.mapToPasswordChangeResponse(savedUser);
     }
