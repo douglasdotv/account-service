@@ -1,8 +1,6 @@
 package br.com.dv.account.controller;
 
-import br.com.dv.account.dto.admin.AdminUserResponse;
-import br.com.dv.account.dto.admin.RoleUpdateRequest;
-import br.com.dv.account.dto.admin.UserDeletionResponse;
+import br.com.dv.account.dto.admin.*;
 import br.com.dv.account.service.admin.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +33,12 @@ public class AdminController {
     @PutMapping("/user/role")
     public ResponseEntity<AdminUserResponse> updateUserRole(@Valid @RequestBody RoleUpdateRequest request) {
         AdminUserResponse response = adminService.updateUserRoles(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/user/access")
+    public ResponseEntity<AccessUpdateResponse> updateUserAccess(@Valid @RequestBody AccessUpdateRequest request) {
+        AccessUpdateResponse response = adminService.updateUserAccess(request);
         return ResponseEntity.ok(response);
     }
 

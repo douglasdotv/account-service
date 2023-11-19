@@ -5,10 +5,7 @@ import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
 import br.com.dv.account.enums.UserRoleOperation;
 import br.com.dv.account.enums.RoleType;
-import br.com.dv.account.exception.custom.AdminRestrictionException;
-import br.com.dv.account.exception.custom.LastRoleException;
-import br.com.dv.account.exception.custom.RoleConflictException;
-import br.com.dv.account.exception.custom.RoleNotAssignedException;
+import br.com.dv.account.exception.custom.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -21,6 +18,12 @@ public class RoleValidationService {
     public void ensureUserIsNotRoleAdminBeforeDeletion(User user) {
         if (isAdmin(user)) {
             throw new AdminRestrictionException();
+        }
+    }
+
+    public void ensureUserIsNotRoleAdminBeforeLock(User user) {
+        if (isAdmin(user)) {
+            throw new CannotLockAdminException();
         }
     }
 

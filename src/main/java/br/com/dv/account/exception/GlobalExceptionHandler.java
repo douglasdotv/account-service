@@ -62,7 +62,8 @@ public class GlobalExceptionHandler {
             AdminRestrictionException.class,
             RoleNotAssignedException.class,
             LastRoleException.class,
-            RoleConflictException.class
+            RoleConflictException.class,
+            CannotLockAdminException.class
     })
     public ResponseEntity<CustomErrorResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), request);

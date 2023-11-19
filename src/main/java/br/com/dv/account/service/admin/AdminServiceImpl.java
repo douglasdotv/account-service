@@ -1,10 +1,9 @@
 package br.com.dv.account.service.admin;
 
-import br.com.dv.account.dto.admin.AdminUserResponse;
-import br.com.dv.account.dto.admin.RoleUpdateRequest;
-import br.com.dv.account.dto.admin.UserDeletionResponse;
+import br.com.dv.account.dto.admin.*;
 import br.com.dv.account.entity.Role;
 import br.com.dv.account.entity.User;
+import br.com.dv.account.enums.UserAccessOperation;
 import br.com.dv.account.enums.UserRoleOperation;
 import br.com.dv.account.enums.StatusMessage;
 import br.com.dv.account.exception.custom.RoleNotFoundException;
@@ -22,6 +21,9 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
 
     private static final String ROLE_PREFIX = "ROLE_";
+    private static final String USER_ACCESS_UPDATE_MESSAGE = "User %s %s!";
+    private static final String LOCKED = "locked";
+    private static final String UNLOCKED = "unlocked";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -67,6 +69,19 @@ public class AdminServiceImpl implements AdminService {
         return userMapper.mapToAdminUserResponse(user);
     }
 
+    @Override
+    @Transactional
+    public AccessUpdateResponse updateUserAccess(AccessUpdateRequest accessUpdateRequest) {
+        User user = findUserByEmail(accessUpdateRequest.userEmail());
+
+        roleValidationService.ensureUserIsNotRoleAdminBeforeLock(user);
+        applyAccessUpdateToUser(user, accessUpdateRequest);
+        userRepository.save(user);
+
+        String responseStatusMessage = getAccessUpdateStatusMessage(user, accessUpdateRequest.operation());
+        return new AccessUpdateResponse(responseStatusMessage);
+    }
+
     private User findUserByEmail(String email) {
         return userRepository.findByEmailIgnoreCase(email).orElseThrow(() -> new UserNotFoundException(email));
     }
@@ -82,6 +97,23 @@ public class AdminServiceImpl implements AdminService {
         } else if (operation == UserRoleOperation.GRANT) {
             user.getRoles().add(role);
         }
+    }
+
+    private void applyAccessUpdateToUser(User user, AccessUpdateRequest accessUpdateRequest) {
+        UserAccessOperation operation = accessUpdateRequest.operation();
+        if (operation == UserAccessOperation.LOCK) {
+            user.setLocked(true);
+        } else if (operation == UserAccessOperation.UNLOCK) {
+            user.setLocked(false);
+        }
+    }
+
+    private String getAccessUpdateStatusMessage(User user, UserAccessOperation operation) {
+        String operationResult = operation == UserAccessOperation.LOCK ? LOCKED : UNLOCKED;
+        return String.format(
+                USER_ACCESS_UPDATE_MESSAGE,
+                user.getEmail(), operationResult
+        );
     }
 
 }
