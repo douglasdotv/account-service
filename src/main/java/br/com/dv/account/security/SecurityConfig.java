@@ -1,6 +1,7 @@
 package br.com.dv.account.security;
 
 import br.com.dv.account.enums.RoleType;
+import br.com.dv.account.service.securityevent.logger.SecurityEventLogger;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +23,18 @@ public class SecurityConfig {
 
     private static final int BCRYPT_STRENGTH = 13;
 
+    private final SecurityEventLogger securityEventLogger;
+
+    public SecurityConfig(SecurityEventLogger securityEventLogger) {
+        this.securityEventLogger = securityEventLogger;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         return http
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                        .accessDeniedHandler(new ApiAccessDeniedHandler()))
+                        .accessDeniedHandler(new ApiAccessDeniedHandler(securityEventLogger)))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/actuator/shutdown")).permitAll()

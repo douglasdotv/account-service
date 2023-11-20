@@ -1,5 +1,6 @@
 package br.com.dv.account.security;
 
+import br.com.dv.account.service.securityevent.logger.SecurityEventLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,9 +18,18 @@ import java.util.Map;
 
 public class ApiAccessDeniedHandler implements AccessDeniedHandler {
 
+    private final SecurityEventLogger securityEventLogger;
+
+    public ApiAccessDeniedHandler(SecurityEventLogger securityEventLogger) {
+        this.securityEventLogger = securityEventLogger;
+    }
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
+        String path = request.getRequestURI();
+        securityEventLogger.logAccessDeniedEvent(path);
+
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -28,7 +38,7 @@ public class ApiAccessDeniedHandler implements AccessDeniedHandler {
         body.put("status", HttpStatus.FORBIDDEN.value());
         body.put("error", HttpStatus.FORBIDDEN.getReasonPhrase());
         body.put("message", accessDeniedException.getMessage());
-        body.put("path", request.getRequestURI());
+        body.put("path", path);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
