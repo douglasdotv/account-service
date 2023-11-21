@@ -2,7 +2,7 @@
 
 ## Introduction
 
-account-service is a project focused on creating a robust and secure accounting service. The service is designed with a REST API, integrating authentication, authorization, and complex business logic related to accounting practices.
+This is a project focused on creating a robust and secure accounting service. The service is designed with a REST API, integrating authentication, authorization, and complex business logic related to accounting practices.
 
 ## Features
 
@@ -46,4 +46,3 @@ account-service is a project focused on creating a robust and secure accounting 
 - H2 Database
 - Lombok
 - MapStruct
-- 
