@@ -1,8 +1,11 @@
 # Account Service
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/douglasdotv/account-service/blob/master/README.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/douglasdotv/account-service/blob/master/README.pt-br.md)
+
 ## Introduction
 
-account-service is a project focused on creating a secure accounting service. The service is designed as a REST API, integrating authentication, authorization and business logic related to accounting practices.
+This is a project focused on creating a secure accounting service. The service is designed as a REST API, integrating authentication, authorization and business logic related to accounting practices.
 
 ## Features
 
@@ -10,7 +13,6 @@ account-service is a project focused on creating a secure accounting service. Th
 - Role-based access control for administrators, accountants, auditors, and other employees
 - Security event tracking and logging for crucial activities
 - Account locking mechanism after five unsuccessful login attempts
-- Secure HTTPS connection
 
 ## Endpoints
 
@@ -22,7 +24,9 @@ account-service is a project focused on creating a secure accounting service. Th
 - DELETE /api/admin/user/{userEmail}: delete user by e-mail
 - PUT /api/admin/user/role: grant/remove roles to users
 - PUT /api/admin/user/access: lock/unlock user access
-- GET /api/empl/payment: get a payment for an employee for a specific period or get all payments if no period is specified
+- GET /api/empl/payment: get a payment for an employee for a specific period (or get all payments if no period is specified)
+
+## Permissions
 
 |          Endpoint           | Anonymous | User | Accountant | Administrator | Auditor |
 | :-------------------------: | :-------: | :--: | :--------: | :-----------: | :-----: |
@@ -43,6 +47,6 @@ account-service is a project focused on creating a secure accounting service. Th
 - Spring Boot
 - Spring Security
 - Spring Data JPA
-- H2 Database
+- H2
 - Lombok
 - MapStruct
